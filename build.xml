@@ -1,0 +1,68 @@
+<project name="CompassAPI" default="deploy">
+
+  <property file="build.properties" />
+
+  <condition property="isWindows">
+    <os family="windows" />
+  </condition>
+
+  <target name="OS-WIN" if="isWindows">
+    <property name="apicmd" value="apidoc.cmd"/>
+  </target>
+
+  <target name="OS-MAC-UNIX" unless="isWindows">
+    <property name="apicmd" value="apidoc"/>
+  </target>
+
+  <path id="classpath">
+    <fileset dir="./">
+      <include name="${srclib}/*.jar" />
+    </fileset>
+  </path>
+
+  <target name="compile">
+    <mkdir dir="${destdir}/WEB-INF/classes"/>
+    <mkdir dir="${destdir}/WEB-INF/lib/"/>
+    <copy todir="${destdir}/WEB-INF/lib">
+      <fileset dir="lib"/>
+    </copy>
+    <javac classpathref="classpath" srcdir="src" destdir="${destdir}/WEB-INF/classes/" />
+    <copy file="${src}/${daopackage}/dao.properties" todir="${destdir}/WEB-INF/classes/${daopackage}"/>
+    <copy file="${src}/${servicepackage}/service.properties" todir="${destdir}/WEB-INF/classes/${servicepackage}"/>
+    <copy file="${src}/${halpackage}/hal.properties" todir="${destdir}/WEB-INF/classes/${halpackage}"/>
+    <copy file="${src}/${mapperservicepackage}/mapper.properties" todir="${destdir}/WEB-INF/classes/${mapperservicepackage}" />
+    <copy file="${src}/${activitysuggestionpackage}/emotions.properties" todir="${destdir}/WEB-INF/classes/${activitysuggestionpackage}" />
+    <copy file="${src}/${modelfactorypackage}/activityName.properties" todir="${destdir}/WEB-INF/classes/${modelfactorypackage}" />
+    <copy file="${src}/${modelfactorypackage}/moduleSchedule.json" todir="${destdir}/WEB-INF/classes/${modelfactorypackage}" />
+  </target>
+
+<!--  <target name="build" depends="compile,apidoc">-->
+<!--    <copy file="${srcweb}/web.xml" todir="${destdir}/WEB-INF"/>-->
+<!--    <war destfile="${warfile}" basedir="${destdir}" needxmlfile="false"/>-->
+<!--  </target>-->
+
+  <target name="build" depends="compile">
+    <copy file="${srcweb}/web.xml" todir="${destdir}/WEB-INF"/>
+    <war destfile="${warfile}" basedir="${destdir}" needxmlfile="false"/>
+  </target>
+
+  <target name="apidoc" depends="OS-WIN,OS-MAC-UNIX">
+    <mkdir dir="${apidocdir}"/>
+    <exec dir="." executable="${apicmd}">
+      <arg line="-i ./${src} -o ./${apidocdir}"/>
+    </exec>
+  </target>
+
+  <target name="deploy" depends="build">
+    <copy file="${warfile}" todir="${tomcat_webapps}" />
+  </target>
+
+  <target name="clean">
+    <delete file="${warfile}" />
+    <delete dir="${destdir}"/>
+  </target>
+
+  <target name="undeploy">
+    <delete file="${tomcat_webapps}/${warfile}" />
+  </target>
+</project>

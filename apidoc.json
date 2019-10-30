@@ -1,0 +1,27 @@
+{
+  "name": "HEAL API",
+  "version": "0.1.0",
+  "description": "HEAL API Documentation",
+  "title": "HEAL API",
+  "url" : "https://localhost:8080/CompassAPI/rest",
+  "order":[
+    "Patient",
+    "GetPatients",
+    "GetPatientsOfTrial",
+    "GetPatientDetail",
+    "AddPatient",
+    "UpdatePatient",
+    "RemovePatient",
+    "ActivityInstance",
+    "GetActivityInstances",
+    "ActivityInstanceDetail",
+    "CreateActivityInstance",
+    "UpdateActivityInstance",
+    "DeleteActivityInstance",
+    "Activity",
+    "CreateActivity",
+    "GetTrialsOfDomain",
+    "AddTrial",
+    "AddLogs"
+  ]
+}

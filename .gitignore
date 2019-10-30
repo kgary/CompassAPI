@@ -1,0 +1,28 @@
+#Idea IDE files
+.idea/
+.idea/*
+
+#IML files
+*.iml
+
+#Mac OS Extras
+
+.DS_Store
+.DS_Store/*
+
+#Idea build artifact
+
+out
+doc
+/bin/
+
+
+# Ingone 
+CompassAPI.war
+CompassAPI/
+WebContent/
+.classpath
+.project
+.settings/
+apidocs/
+
